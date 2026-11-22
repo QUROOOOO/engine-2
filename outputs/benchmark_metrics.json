@@ -1,0 +1,34 @@
+{
+  "xgboost": {
+    "accuracy": 0.9975,
+    "macro_f1": 0.997508,
+    "mae_ms": 0.063495,
+    "rmse_ms": 0.278084,
+    "r2": 0.994256
+  },
+  "pytorch_mlp": {
+    "accuracy": 0.9875,
+    "macro_f1": 0.98755,
+    "mae_ms": 0.230217,
+    "rmse_ms": 0.614295,
+    "r2": 0.971971
+  },
+  "ppo_rl": {
+    "mean_reward": 50.956,
+    "safe_rate": 1.0,
+    "total_fuel_ms": 5781.411,
+    "naive_fuel_ms": 8510.25,
+    "fuel_saved_pct": 32.07,
+    "model_path": "D:\\hackathons\\Random\\models\\ppo_cam_agent.zip"
+  },
+  "qubo_milp": {
+    "qubo_energy": 2005.0,
+    "milp_objective": 4005.0,
+    "approximation_ratio": 1.0,
+    "qubo_fuel_total_ms": 5.0,
+    "milp_fuel_total_ms": 5.0,
+    "fuel_saved_vs_greedy_pct": 75.0,
+    "n_conjunctions": 10,
+    "n_binary_variables": 120
+  }
+}

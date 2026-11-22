@@ -1,0 +1,154 @@
+{
+  "qubo_energy": 2005.0,
+  "milp_objective": 4005.0,
+  "approximation_ratio": 1.0,
+  "qubo_fuel_total_ms": 5.0,
+  "milp_fuel_total_ms": 5.0,
+  "fuel_saved_vs_greedy_pct": 75.0,
+  "n_conjunctions": 10,
+  "n_binary_variables": 120,
+  "qubo_assignments": [
+    {
+      "conjunction": 0,
+      "burn_option": 0,
+      "axis": "Along-Track",
+      "lead_time": "early_gt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 1,
+      "burn_option": 8,
+      "axis": "Hybrid",
+      "lead_time": "early_gt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 2,
+      "burn_option": 0,
+      "axis": "Along-Track",
+      "lead_time": "early_gt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 3,
+      "burn_option": 4,
+      "axis": "Cross-Track",
+      "lead_time": "early_gt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 4,
+      "burn_option": 0,
+      "axis": "Along-Track",
+      "lead_time": "early_gt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 5,
+      "burn_option": 0,
+      "axis": "Along-Track",
+      "lead_time": "early_gt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 6,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 7,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 8,
+      "burn_option": 8,
+      "axis": "Hybrid",
+      "lead_time": "early_gt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 9,
+      "burn_option": 2,
+      "axis": "Along-Track",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    }
+  ],
+  "milp_assignments": [
+    {
+      "conjunction": 0,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 1,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 2,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 3,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 4,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 5,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 6,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 7,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 8,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    },
+    {
+      "conjunction": 9,
+      "burn_option": 10,
+      "axis": "Hybrid",
+      "lead_time": "late_lt4h",
+      "dv_ms": 0.5
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+[project]
+name = "engine-2"
+version = "1.0.0"
+description = "QuantumOrbit Engine 2: Autonomous Space Debris Collision Avoidance (CAM)"
+requires-python = ">=3.9"

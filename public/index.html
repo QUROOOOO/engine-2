@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>QuantumOrbit · Autonomous Conjunction Desk</title>
+<meta name="description" content="Autonomous collision avoidance and orbital safety console for Low Earth Orbit." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2307080a'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ff4f00' stroke-width='3'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script type="module" crossorigin src="/assets/index-BM0esC_x.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/vendor-three-C5OiqLEU.js">
+  <link rel="modulepreload" crossorigin href="/assets/vendor-sgp4-DzoOSkRs.js">
+  <link rel="stylesheet" crossorigin href="/assets/index-dPn0H3fl.css">
+</head>
+<body>
+<div id="app">
+  <header class="bar">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 28 28" aria-hidden="true">
+        <circle cx="14" cy="14" r="5.2" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <ellipse cx="14" cy="14" rx="12" ry="4.6" fill="none" stroke="currentColor" stroke-width="1" transform="rotate(-28 14 14)"/>
+        <circle cx="24.2" cy="8.9" r="1.6" fill="currentColor"/>
+      </svg>
+      <div><b>QUANTUM<span>ORBIT</span></b><i>autonomous conjunction desk</i></div>
+    </div>
+    <div class="bar-mid">
+      <span class="tag" id="epochTag">AUTONOMOUS CAM</span>
+      <span class="tag" id="sourceTag">CelesTrak GP</span>
+      <span class="tag ok" id="linkTag">SGP4 ACTIVE</span>
+    </div>
+    <div class="bar-right">
+      <button class="ghost" id="ecoBtn" title="Toggle Battery-Saver Eco Mode (30 FPS, 1.0x DPR)" aria-pressed="false">ECO</button>
+      <button class="ghost" id="cinemaBtn" title="Toggle Cinema View (Z)">CINEMA</button>
+      <button class="ghost" id="helpBtn" title="Navigation Guide">HELP</button>
+      <button class="ghost" id="themeBtn" title="Toggle Light/Dark Theme">LIGHT</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <!-- LEFT SIDEBAR: Constellation & Object Roster -->
+    <aside class="rail">
+      <section class="block">
+        <div class="block-head"><h2>Constellation</h2><span class="idx">LEO</span></div>
+        <div class="counter">
+          <label for="satCount">Protected Satellites</label>
+          <div class="stepper">
+            <button id="satMinus" data-step="sat" data-dir="-1" aria-label="Fewer satellites">−</button>
+            <output id="satCount">5</output>
+            <button id="satPlus" data-step="sat" data-dir="1" aria-label="More satellites">+</button>
+          </div>
+        </div>
+        <div class="counter">
+          <label for="debrisCount">Tracked Debris</label>
+          <div class="stepper">
+            <button id="debMinus" data-step="deb" data-dir="-1" aria-label="Fewer debris">−</button>
+            <output id="debrisCount">200</output>
+            <button id="debPlus" data-step="deb" data-dir="1" aria-label="More debris">+</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="block grow">
+        <div class="block-head"><h2>Monitored Objects</h2><span class="idx" id="activeObjCount">205</span></div>
+        <input id="search" class="search" type="search" aria-label="Filter objects by name" placeholder="Filter by name…" spellcheck="false" />
+        <div id="objList" class="obj-list" role="listbox" aria-label="Tracked objects list" tabindex="0"></div>
+        <span id="selName" class="sr-only" aria-live="polite">—</span>
+      </section>
+    </aside>
+
+    <!-- CENTER VIEWPORT: Pure, Uncluttered 3D Orbital Scene -->
+    <section class="stage" id="stage">
+      <canvas id="view" role="img" aria-label="Interactive 3D orbital space view"></canvas>
+
+      <!-- Live Event Status Pill (Centered Top) -->
+      <div id="livePill" class="live-pill" role="status" aria-live="polite">
+        <span class="pill-dot"></span>
+        <span id="livePillText">All Systems Nominal · Scanning LEO Orbit</span>
+      </div>
+
+      <!-- Minimal 3D View Axis Gizmo & Reset Button (Top Right) -->
+      <div class="nav-gizmo-wrap" id="navGizmoWrap">
+        <div id="gizmoContainer" class="gizmo-container"></div>
+        <button id="gizmoReset" class="gizmo-reset-btn" aria-label="Reset Camera View" title="Reset Camera View (Home)"><span aria-hidden="true">⌖</span></button>
+      </div>
+
+      <!-- Floating Exit Cinema Button -->
+      <button id="exitCinemaBtn" class="exit-cinema-btn" aria-label="Exit Cinema Mode (Esc or Z)" title="Exit Cinema Mode (Esc or Z)">
+        <span aria-hidden="true">✕</span> Exit Cinema
+      </button>
+
+      <!-- Active Camera Frame Mode Pill (Bottom Right) -->
+      <div id="camModePill" class="cam-mode-pill" role="status" aria-live="polite">
+        <span class="mode-tag" id="camModeTag">PLANET VIEW</span>
+        <span class="mode-sep" aria-hidden="true">•</span>
+        <span class="mode-target" id="camModeTarget">Earth Center</span>
+        <button id="returnEarthBtn" class="return-btn" style="display:none;" title="Return to Earth View (R or Esc)">Return to Earth ⌖</button>
+      </div>
+
+      <!-- WebGL Recovery Banner -->
+      <div id="webglLostBanner" class="webgl-lost-banner" hidden role="alert">
+        <span>WebGL Context Lost</span>
+        <button id="webglReloadBtn" type="button">Click to reload</button>
+      </div>
+
+      <div id="loading" class="loading" role="status" aria-live="polite"><span></span><p>Propagating LEO Catalog…</p></div>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </section>
+
+    <!-- RIGHT SIDEBAR: Student-Friendly Plain-English Cards -->
+    <aside class="panel">
+      <!-- 1. Live Encounter Status Card -->
+      <section class="block">
+        <div class="block-head">
+          <h2>Encounter Status</h2>
+          <span id="riskChip" class="status-badge safe">ALL SATELLITES SAFE</span>
+        </div>
+        <div class="encounter-summary-box">
+          <p id="encounterSummary" class="encounter-summary">
+            All protected satellites are currently operating outside keep-out corridors. Monitoring 200 debris fragments in Low Earth Orbit.
+          </p>
+        </div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">Target Asset</span>
+            <b class="metric-val" id="threatSat">—</b>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Closest Miss</span>
+            <b class="metric-val" id="threatMiss">> 25 km</b>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Relative Speed</span>
+            <b class="metric-val" id="threatVel">11.2 km/s</b>
+          </div>
+        </div>
+        <span id="threatDeb" class="sr-only">—</span>
+      </section>
+
+      <!-- 2. Engine 2 Autonomous Dodge Plan Card -->
+      <section class="block">
+        <div class="block-head">
+          <h2>Engine 2 Dodge Plan</h2>
+          <span id="planState" class="plan-pill">STANDBY</span>
+        </div>
+        <p id="planExplanation" class="plan-explanation">
+          Continuous autonomous monitoring active. When debris crosses the 5.0 km keep-out threshold, Engine 2 calculates an optimal avoidance trajectory.
+        </p>
+
+        <!-- Before vs. After Distance Shift & Calibrated Fuel -->
+        <div class="dodge-metrics-box">
+          <div class="dodge-stat">
+            <span>Pass Distance</span>
+            <b id="dodgeShift">Safe Clearance ✓</b>
+          </div>
+          <div class="dodge-stat">
+            <span>Thruster Fuel</span>
+            <b id="dodgeBurn">0.00 m/s</b>
+            <span id="planFuel" class="sr-only">25.0 m/s</span>
+          </div>
+        </div>
+
+        <!-- Clean Simplified Target Radar -->
+        <div class="radar-wrap">
+          <div class="radar-legend">
+            <span>TARGET RADAR</span>
+            <span class="radar-sub">5.0 KM KEEP-OUT RING</span>
+          </div>
+          <canvas id="bplane" width="220" height="220" role="img" aria-label="Collision avoidance target radar showing 5 km safe keep-out corridor"></canvas>
+        </div>
+
+        <!-- Auto-Avoidance AI Switch -->
+        <div class="toggle-row" style="display:flex;align-items:center;justify-content:space-between;margin:8px 0;padding:6px 10px;background:var(--surface2,rgba(255,255,255,0.04));border:1px solid var(--border);border-radius:6px;">
+          <span style="font-size:11px;font-weight:600;letter-spacing:0.04em;">Auto-Avoidance AI</span>
+          <label class="switch" style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" id="autoDodgeToggle" checked style="cursor:pointer;" aria-label="Toggle autonomous collision avoidance" />
+            <span id="autoDodgeLabel" class="dodge-toggle-label">ON</span>
+          </label>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:10px;">
+          <button id="executeBtn" class="primary" style="flex:1;">TRIGGER DODGE NOW</button>
+          <button id="testCrashBtn" class="danger-btn" style="flex:1;" title="Simulate direct kinetic collision without avoidance burn">TEST CRASH 💥</button>
+        </div>
+      </section>
+
+      <!-- 3. Simple Simulation Controls Card -->
+      <section class="block tight">
+        <div class="block-head"><h2>Simulation Controls</h2><span class="idx">OPS</span></div>
+        <div class="tl-wrap" style="margin-bottom: 10px;">
+          <div class="tl-track" id="timeline" role="slider" aria-label="Simulation timeline scrub" tabindex="0" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="tl-fill" id="timelineFill"></div>
+          </div>
+        </div>
+        <div class="sim-ctrl-row">
+          <div class="rates" id="rates" role="group" aria-label="Simulation speed">
+            <button data-rate="1" aria-label="1x speed">1×</button>
+            <button data-rate="5" class="on" aria-label="5x speed">5×</button>
+            <button data-rate="20" aria-label="20x speed">20×</button>
+            <button data-rate="600" aria-label="600x speed">600×</button>
+          </div>
+          <button id="pauseBtn" class="pause-btn">PAUSE</button>
+        </div>
+        <div class="follow-row">
+          <label class="toggle-label" for="autoFollowToggle">
+            <input type="checkbox" id="autoFollowToggle" checked />
+            <span>Auto-Focus Events</span>
+          </label>
+          <span class="met-text">MET: <b id="met" class="num">00:00:00</b></span>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <!-- Help & Navigation Guide Modal -->
+  <div id="help" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="modal-card">
+      <header><h3 id="helpTitle">Controls & Navigation Guide</h3><button id="helpClose" aria-label="Close dialog">✕</button></header>
+      <div class="keys">
+        <div><kbd>Left drag / 1 finger</kbd><span>Orbit around satellite</span></div>
+        <div><kbd>Shift + Drag / 2 fingers</kbd><span>Pan view</span></div>
+        <div><kbd>Scroll / Pinch</kbd><span>Zoom in / out</span></div>
+        <div><kbd>Click on Object</kbd><span>Focus satellite or debris</span></div>
+        <div><kbd>1 / 3 / 7</kbd><span>Preset views (Front/Right/Top)</span></div>
+        <div><kbd>Space</kbd><span>Pause / Resume</span></div>
+        <div><kbd>Home / ⌖</kbd><span>Reset camera view</span></div>
+        <div><kbd>?</kbd><span>Open this guide</span></div>
+      </div>
+      <p class="fine">QuantumOrbit simulates real SGP4 orbital mechanics in Low Earth Orbit (LEO). Engine 2 autonomously calculates minimal-fuel impulsive burns to ensure protected satellites maintain at least 5.0 km clearance from all tracked debris fragments.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

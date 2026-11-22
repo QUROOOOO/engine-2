@@ -1,0 +1,37 @@
+{
+  "engine": "Engine2-CAM",
+  "version": "1.0.0",
+  "input": {
+    "conjunction_id": 42,
+    "active_sat_norad_id": 43689,
+    "debris_norad_id": 34127,
+    "time_to_tca_hours": 8.5,
+    "pre_maneuver_miss_dist_km": 1.23,
+    "relative_velocity_kms": 12.4,
+    "collision_prob_pc": 3.2e-3,
+    "crossing_angle_deg": 67.8,
+    "sat_altitude_km": 620.0,
+    "sat_inclination_deg": 97.4,
+    "rel_pos_R_km": 0.35,
+    "rel_pos_T_km": -0.92,
+    "rel_pos_N_km": 0.18,
+    "cov_sigma_T_m": 450.0,
+    "available_fuel_dv_ms": 5.0,
+    "min_impulse_bit_ms": 0.01,
+    "target_pass_conflict_flag": 0,
+    "mission_priority_tier": 1
+  },
+  "output": {
+    "optimal_maneuver_strategy": 0,
+    "optimal_maneuver_label": "Prograde/Retrograde Along-Track Phasing (±T)",
+    "optimal_burn_dv_ms": 0.42,
+    "post_maneuver_miss_dist_km": 8.76,
+    "burn_axis": "Along-Track (+T)",
+    "lead_time_hours": 6.0,
+    "collision_prob_post": 1.2e-9,
+    "fuel_remaining_dv_ms": 4.58,
+    "qubo_approximation_ratio": 0.97,
+    "safety_verified": true
+  }
+}
+

@@ -1,0 +1,36 @@
+{
+  "simulation": {
+    "safeMissKm": 5.0,
+    "pcCritical": 1e-3,
+    "pcWarn": 1e-4,
+    "defaultFuelMs": 15.0,
+    "windowMinutes": 25,
+    "maxDebris": 400,
+    "exaggerationFactor": 20.0
+  },
+  "camera": {
+    "planetMinDist": 76.0,
+    "planetMaxDist": 420.0,
+    "objectMinDist": 0.18,
+    "objectMaxDist": 45.0,
+    "objectReleaseBoundary": 42.0,
+    "defaultFocusDist": 4.2,
+    "dampingFactor": 0.065,
+    "rotateSpeed": 0.85,
+    "zoomSpeed": 1.25,
+    "minRadius": 70,
+    "maxRadius": 1500,
+    "focusDist": 4.2,
+    "fov": 42
+  },
+  "visual": {
+    "kmPerUnit": 0.01,
+    "starCount": 4200,
+    "atmosphereGlow": true
+  },
+  "ui": {
+    "theme": "dark",
+    "reducedMotion": "auto",
+    "refreshRateHz": 30
+  }
+}

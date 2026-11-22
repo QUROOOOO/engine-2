@@ -1,0 +1,11 @@
+media/
+notebooks/
+.agents/
+.claude/
+models/ppo_cam_agent.zip
+models/multitask_mlp.pt
+data/cam_scenarios_10k.csv
+.git
+__pycache__
+*.pyc
+*.ipynb

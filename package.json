@@ -1,0 +1,14 @@
+{
+  "name": "quantumorbit-engine2",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UC096 Engine 2 — QuantumOrbit Space Debris Collision Avoidance Maneuver (CAM) Simulator",
+  "scripts": {
+    "build": "node scripts/build-vercel.js",
+    "vercel-build": "node scripts/build-vercel.js",
+    "start": "python run.py",
+    "test": "pnpm --dir outputs/sim run test",
+    "test:e2e": "pnpm --dir outputs/sim run test:e2e"
+  },
+  "packageManager": "pnpm@9.12.3"
+}
